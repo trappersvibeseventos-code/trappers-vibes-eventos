@@ -1,0 +1,346 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #000;
+    color: white;
+}
+
+
+.topo {
+    background: #0a0a0a;
+    padding: 20px;
+    border-bottom: 3px solid gold;
+}
+
+
+.marca {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+
+.logo {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid gold;
+}
+
+
+h1 {
+    color: gold;
+    font-size: 28px;
+    margin: 0;
+}
+
+
+.topo p {
+    color: #ccc;
+}
+
+
+nav {
+    margin-top: 20px;
+    text-align: center;
+}
+
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 8px;
+    font-weight: bold;
+}
+
+
+nav a:hover {
+    color: gold;
+}
+
+
+section {
+    padding: 30px;
+    text-align: center;
+}
+
+
+h2 {
+    color: red;
+    font-size: 26px;
+}
+
+
+h3 {
+    color: gold;
+}
+
+
+.ceo {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid gold;
+}
+
+
+.redes {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+
+.botao {
+    background: gold;
+    color: black;
+    padding: 12px 25px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+
+.botao:hover {
+    background: red;
+    color: white;
+}
+
+
+footer {
+    background: #111;
+    padding: 20px;
+    text-align: center;
+    border-top: 2px solid red;
+}    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.botao {
+    display: inline-block;
+    margin: 5px;
+    padding: 12px 25px;
+    background: gold;
+    color: black;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: bold;
+}.ceo {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid gold;
+}
+
+.perfil {
+    text-align: center;
+}
+o
+.botao {
+    display: inline-block;
+    margin: 10px;
+    padding: 12px 25px;
+    background: gold;
+    color: black;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: bold;
+}
+
+.botao:hover {
+    background: red;
+    color: white;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #000;
+    color: white;
+}
+
+
+.topo {
+    background: #0a0a0a;
+    padding: 20px;
+    border-bottom: 3px solid gold;
+}
+
+
+.marca {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+
+.logo {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+
+h1 {
+    color: gold;
+    font-size: 28px;
+    margin: 0;
+}
+
+
+.topo p {
+    color: #ccc;
+}
+
+
+nav {
+    margin-top: 20px;
+}
+
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-right: 15px;
+    font-weight: bold;
+}
+
+
+nav a:hover {
+    color: gold;
+}
+
+
+section {
+    padding: 30px;
+    text-align: center;
+}
+
+
+h2 {
+    color: red;
+    font-size: 28px;
+}
+
+
+h3 {
+    color: gold;
+}
+
+
+footer {
+    background: #111;
+    text-align: center;
+    padding: 20px;
+    border-top: 2px solid red;
+}
+    margin: 0;
+.logo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+}O
+    font-family: Arial, sans-serif;
+    background: #000;
+    color: white;
+}
+
+header {
+    background: #b30000;
+    padding: 25px;
+    text-align: center;
+}
+
+h1 {
+    color: gold;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 10px;
+    font-weight: bold;
+}
+
+section {
+    padding: 30px;
+    text-align: center;
+}
+
+.botao {
+    background: gold;
+    color: black;
+    padding: 12px 25px;
+    border-radius: 20px;
+    text-decoration: none;
+}
+
+footer {
+    background: #111;
+    padding: 15px;
+    text-align: center;
+}
+O
+
+.redes {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
