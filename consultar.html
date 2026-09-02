@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Consultar Serviço - TRAPPERS VIBES EVENTOS</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+.consulta-container {
+    max-width: 700px;
+    margin: 60px auto;
+    padding: 20px;
+}
+
+.consulta-box {
+    background: #111;
+    border: 1px solid gold;
+    border-radius: 18px;
+    padding: 30px;
+    text-align: center;
+}
+
+.consulta-box h2 {
+    color: gold;
+    margin-bottom: 10px;
+}
+
+.consulta-box p {
+    color: #ccc;
+}
+
+#codigo {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 8px;
+    border: 1px solid #444;
+    background: #080808;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+}
+
+.botao-consultar {
+    border: none;
+    cursor: pointer;
+    padding: 14px 25px;
+    border-radius: 8px;
+    background: #b30000;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.botao-consultar:hover {
+    background: gold;
+    color: black;
+}
+
+#resultado {
+    margin-top: 30px;
+    text-align: left;
+}
+
+.resultado-box {
+    background: #080808;
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.resultado-box h3 {
+    color: gold;
+}
+
+.status {
+    display: inline-block;
+    padding: 8px 12px;
+    border-radius: 20px;
+    background: #b30000;
+    color: white;
+    font-weight: bold;
+}
+
+.erro {
+    color: #ff5555;
+    font-weight: bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header class="topo">
+
+<div class="barra">
+
+<a href="index.html" class="marca-site">
+
+<img src="img/logo.png?v=3" class="logo">
+
+<div>
+<strong>TRAPPERS VIBES</strong>
+<span>EVENTOS SOLUTION</span>
+</div>
+
+</a>
+
+<nav>
+
+<a href="index.html">Início</a>
+<a href="artistas.html">Artistas</a>
+<a href="eventos.html">Eventos</a>
+<a href="servicos.html">Serviços</a>
+<a href="consultar.html" class="ativo">Consultar Serviço</a>
+<a href="contacto.html">Contacto</a>
+
+</nav>
+
+</div>
+
+</header>
+
+
+<main>
+
+<div class="consulta-container">
+
+<div class="consulta-box">
+
+<h2>📋 Consultar o meu trabalho</h2>
+
+<p>
+Digite o código que recebeu da TRAPPERS VIBES
+para acompanhar o estado do seu serviço.
+</p>
+
+<input
+type="text"
+id="codigo"
+placeholder="Ex: TV-2026-00125"
+autocomplete="off"
+>
+
+<button class="botao-consultar" onclick="consultarServico()">
+🔎 Consultar Serviço
+</button>
+
+<div id="resultado"></div>
+
+</div>
+
+</div>
+
+</main>
+
+
+<footer>
+
+<div>
+
+<strong>TRAPPERS VIBES EVENTOS SOLUTION</strong>
+
+<p>
+Conectando talentos, música e cultura urbana.
+</p>
+
+</div>
+
+<p class="copyright">
+TRAPPERS VIBES EVENTOS © 2026
+</p>
+
+</footer>
+
+
+<script>
+async function consultarServico() {
+    const codigo = document.getElementById("codigo").value.trim();
+    const resultado = document.getElementById("resultado");
+
+    if (!codigo) {
+        resultado.innerHTML = '<p style="color:#d4af37;">Digite o código do seu trabalho.</p>';
+        return;
+    }
+
+    resultado.innerHTML = '<p>🔎 Consultando...</p>';
+
+    try {
+        const resposta = await fetch(
+            "http://127.0.0.1:3001/trabalhos/" + encodeURIComponent(codigo)
+        );
+
+        const dados = await resposta.json();
+
+        if (!resposta.ok || !dados.sucesso) {
+            resultado.innerHTML = `
+                <div class="consulta-erro">
+                    <h3>❌ Código não encontrado</h3>
+                    <p>Verifique o código informado e tente novamente.</p>
+                </div>
+            `;
+            return;
+        }
+
+        const t = dados.trabalho;
+
+        resultado.innerHTML = `
+            <div class="consulta-card">
+                <h2>📋 Detalhes do Trabalho</h2>
+
+                <p><strong>Código:</strong> ${t.codigo}</p>
+                <p><strong>Cliente:</strong> ${t.cliente}</p>
+                <p><strong>Serviço:</strong> ${t.servico}</p>
+                <p><strong>Estado:</strong> ${t.estado}</p>
+
+                <div style="margin:20px 0;">
+                    <strong>Progresso: ${t.progresso}%</strong>
+                    <div style="background:#222;border-radius:20px;height:14px;margin-top:8px;overflow:hidden;">
+                        <div style="width:${t.progresso}%;height:100%;background:#d4af37;border-radius:20px;"></div>
+                    </div>
+                </div>
+
+                <p><strong>Responsável:</strong> ${t.responsavel}</p>
+                <p><strong>Última atualização:</strong> ${t.ultimaAtualizacao}</p>
+                <p><strong>Observações:</strong> ${t.observacoes || "Sem observações."}</p>
+            </div>
+        `;
+
+    } catch (erro) {
+        resultado.innerHTML = `
+            <div class="consulta-erro">
+                <h3>⚠️ Servidor indisponível</h3>
+                <p>O sistema de consulta não está conectado neste momento.</p>
+            </div>
+        `;
+    }
+}
+
+document.getElementById("codigo").addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        consultarServico();
+    }
+});
+</script>
+
+
+</body>
+
+</html>
+

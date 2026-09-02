@@ -1,0 +1,156 @@
+{
+  "servicos": [
+    {
+      "categoria": "Promoção na TRAPPERS VIBES TV",
+      "nome": "7 dias",
+      "descricao": "Promoção de música ou artista na TRAPPERS VIBES TV durante 7 dias.",
+      "preco": "8.000 Kz",
+      "whatsapp": "244934597052",
+      "id": "1788385821096699315"
+    },
+    {
+      "categoria": "Promoção na TRAPPERS VIBES TV",
+      "nome": "14 dias",
+      "descricao": "Promoção de música ou artista na TRAPPERS VIBES TV durante 14 dias.",
+      "preco": "12.000 Kz",
+      "whatsapp": "244934597052",
+      "id": "1788385821096733623"
+    },
+    {
+      "categoria": "Promoção na TRAPPERS VIBES TV",
+      "nome": "30 dias",
+      "descricao": "Promoção de música ou artista na TRAPPERS VIBES TV durante 30 dias.",
+      "preco": "16.000 Kz",
+      "whatsapp": "244934597052",
+      "id": "1788385821096750200"
+    },
+    {
+      "categoria": "Divulgação de Música e Artistas",
+      "nome": "3 dias",
+      "descricao": "Divulgação de música e artistas durante 3 dias.",
+      "preco": "5.000 Kz",
+      "whatsapp": "244934597052",
+      "id": "1788385821096760930"
+    },
+    {
+      "categoria": "Divulgação de Música e Artistas",
+      "nome": "7 dias",
+      "descricao": "Divulgação de música e artistas durante 7 dias.",
+      "preco": "10.000 Kz",
+      "whatsapp": "244934597052",
+      "id": "1788385821096771084"
+    },
+    {
+      "categoria": "Divulgação de Música e Artistas",
+      "nome": "14 dias",
+      "descricao": "Divulgação de música e artistas durante 14 dias.",
+      "preco": "15.000 Kz",
+      "whatsapp": "244934597052",
+      "id": "1788385821096781700"
+    },
+    {
+      "categoria": "Divulgação de Música e Artistas",
+      "nome": "30 dias",
+      "descricao": "Divulgação de música e artistas durante 30 dias.",
+      "preco": "20.000 Kz",
+      "whatsapp": "244934597052",
+      "id": "1788385821096791507"
+    },
+    {
+      "categoria": "Promoção de Eventos",
+      "nome": "Parceria com a Organização",
+      "descricao": "Promoção de eventos através de parceria com a organização.",
+      "preco": "Mediante proposta e parceria",
+      "whatsapp": "244934597052",
+      "id": "1788385821096801161"
+    },
+    {
+      "categoria": "Distribuição Musical",
+      "nome": "Básico",
+      "descricao": "Distribuição para as principais plataformas digitais.",
+      "preco": "5.000 Kz",
+      "whatsapp": "244934597052",
+      "id": "1788385910082071021"
+    },
+    {
+      "categoria": "Distribuição Musical",
+      "nome": "Profissional",
+      "descricao": "Distribuição musical + otimização do perfil do artista + suporte.",
+      "preco": "10.000 Kz",
+      "whatsapp": "244934597052",
+      "id": "1788385910082109098"
+    },
+    {
+      "categoria": "Distribuição Musical",
+      "nome": "Premium",
+      "descricao": "Distribuição completa, suporte prioritário, acompanhamento do lançamento e estratégias de promoção.",
+      "preco": "15.000 Kz",
+      "whatsapp": "244934597052",
+      "id": "1788385910082129482"
+    },
+    {
+      "categoria": "Capas Musicais",
+      "nome": "Básico",
+      "descricao": "Criação de capa musical profissional.",
+      "preco": "1.500 Kz",
+      "whatsapp": "244934597052",
+      "id": "1788385910082139982"
+    },
+    {
+      "categoria": "Capas Musicais",
+      "nome": "Profissional",
+      "descricao": "Criação de capa musical profissional com acabamento visual de alta qualidade.",
+      "preco": "3.000 Kz",
+      "whatsapp": "244934597052",
+      "id": "1788385910082150444"
+    },
+    {
+      "categoria": "Capas Musicais",
+      "nome": "Premium",
+      "descricao": "Criação de capa musical premium com design profissional e acabamento completo.",
+      "preco": "5.000 Kz",
+      "whatsapp": "244934597052",
+      "id": "1788385910082160136"
+    },
+    {
+      "categoria": "Plano de Marketing",
+      "nome": "3 dias",
+      "descricao": "Plano de marketing e promoção durante 3 dias.",
+      "preco": "3.000 Kz",
+      "whatsapp": "244934597052",
+      "id": "1788385910082170174"
+    },
+    {
+      "categoria": "Plano de Marketing",
+      "nome": "7 dias",
+      "descricao": "Plano de marketing e promoção durante 7 dias.",
+      "preco": "6.000 Kz",
+      "whatsapp": "244934597052",
+      "id": "1788385910082179944"
+    },
+    {
+      "categoria": "Plano de Marketing",
+      "nome": "14 dias",
+      "descricao": "Plano de marketing e promoção durante 14 dias.",
+      "preco": "12.000 Kz",
+      "whatsapp": "244934597052",
+      "id": "1788385910082198790"
+    },
+    {
+      "categoria": "Plano de Marketing",
+      "nome": "30 dias",
+      "descricao": "Plano de marketing e promoção durante 30 dias.",
+      "preco": "15.000 Kz",
+      "whatsapp": "244934597052",
+      "id": "1788385910082209867"
+    },
+    {
+      "categoria": "Promoção na TRAPPERS VIBES TV",
+      "nome": "3 dias",
+      "descricao": "Promoção de música ou artista na TRAPPERS VIBES TV durante 3 dias.",
+      "preco": "4.000 Kz",
+      "whatsapp": "244934597052",
+      "id": "1788385910082220059"
+    }
+  ]
+}

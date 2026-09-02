@@ -1,0 +1,16 @@
+.env
+.env.*
+node_modules/
+admin-server/node_modules/
+trappers-ai-server/node_modules/
+
+*.log
+
+*_backup.html
+*_backup_*.html
+*_antes_*.html
+
+admin-server/data/*.backup
+
+*_backup*.json
+*_backup*.js

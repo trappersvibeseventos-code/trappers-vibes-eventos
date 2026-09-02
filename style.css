@@ -1,346 +1,435 @@
+cat > style.css <<'EOF'
+* {
+    box-sizing: border-box;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+html {
+    scroll-behavior: smooth;
+}
 
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background: #000;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #050505;
+    color: white;
+    line-height: 1.6;
+}
+
+a {
+    text-decoration: none;
+}
+
+.topo {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(5, 5, 5, 0.96);
+    border-bottom: 1px solid #292000;
+    backdrop-filter: blur(10px);
+}
+
+.barra {
+    max-width: 1200px;
+    margin: auto;
+    padding: 15px 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+}
+
+.marca-site {
+    display: flex;
+    align-items: center;
+    gap: 12px;
     color: white;
 }
 
-
-.topo {
-    background: #0a0a0a;
-    padding: 20px;
-    border-bottom: 3px solid gold;
-}
-
-
-.marca {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-
 .logo {
-    width: 90px;
-    height: 90px;
+    width: 55px;
+    height: 55px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid gold;
+    border: 2px solid gold;
 }
 
-
-h1 {
+.marca-site strong {
+    display: block;
     color: gold;
-    font-size: 28px;
-    margin: 0;
+    font-size: 16px;
 }
 
-
-.topo p {
-    color: #ccc;
+.marca-site span {
+    display: block;
+    color: #aaa;
+    font-size: 11px;
+    letter-spacing: 2px;
 }
-
 
 nav {
-    margin-top: 20px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+nav a {
+    color: #ddd;
+    padding: 9px 13px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 6px;
+}
+
+nav a:hover,
+nav a.ativo {
+    color: #050505;
+    background: gold;
+}
+
+
+/* HERO */
+
+.hero-home {
+    min-height: 680px;
+    display: flex;
+    align-items: center;
+    background:
+        radial-gradient(circle at 75% 35%, rgba(255, 215, 0, 0.12), transparent 30%),
+        linear-gradient(135deg, #111 0%, #050505 55%, #090000 100%);
+    border-bottom: 2px solid gold;
+}
+
+.hero-conteudo {
+    width: 1200px;
+    max-width: 90%;
+    margin: auto;
+}
+
+.etiqueta,
+.mini-titulo {
+    color: gold;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 3px;
+}
+
+.hero-home h1 {
+    font-size: clamp(42px, 7vw, 82px);
+    line-height: 0.98;
+    margin: 20px 0;
+    color: white;
+    max-width: 850px;
+}
+
+.hero-home h1 span,
+section h2 span {
+    color: gold;
+}
+
+.descricao {
+    max-width: 650px;
+    color: #bbb;
+    font-size: 18px;
+}
+
+.botoes {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 13px 22px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: 0.25s;
+}
+
+.btn.principal {
+    background: gold;
+    color: #050505;
+}
+
+.btn.principal:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.2);
+}
+
+.btn.secundario {
+    border: 1px solid gold;
+    color: gold;
+}
+
+.btn.secundario:hover {
+    background: gold;
+    color: #050505;
+}
+
+
+/* SEÇÕES */
+
+section {
+    padding: 90px 25px;
+}
+
+.sobre {
+    max-width: 1200px;
+    margin: auto;
     text-align: center;
 }
 
+section h2 {
+    font-size: clamp(32px, 5vw, 52px);
+    line-height: 1.1;
+    margin: 10px 0 20px;
+}
 
-nav a {
+.sobre > p:not(.mini-titulo) {
+    max-width: 700px;
+    margin: auto;
+    color: #aaa;
+}
+
+.cards {
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.card {
+    padding: 35px 25px;
+    background: #101010;
+    border: 1px solid #252525;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-7px);
+    border-color: gold;
+}
+
+.icone {
+    font-size: 40px;
+}
+
+.card h3 {
+    color: gold;
+    font-size: 23px;
+}
+
+.card p {
+    color: #999;
+}
+
+.card a {
     color: white;
-    text-decoration: none;
-    margin: 8px;
     font-weight: bold;
 }
 
 
-nav a:hover {
-    color: gold;
+/* DESTAQUE */
+
+.destaque {
+    max-width: 1200px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    align-items: center;
+    gap: 50px;
+    background: #0c0c0c;
 }
 
+.destaque > div:first-child {
+    padding: 20px;
+}
 
-section {
-    padding: 30px;
+.destaque p:not(.mini-titulo) {
+    color: #aaa;
+    max-width: 600px;
+}
+
+.destaque-logo {
     text-align: center;
 }
 
-
-h2 {
-    color: red;
-    font-size: 26px;
+.destaque-logo img {
+    width: 250px;
+    max-width: 80%;
+    border-radius: 50%;
+    border: 5px solid gold;
 }
 
 
-h3 {
-    color: gold;
+/* CEO */
+
+.ceo-area {
+    text-align: center;
+    background: #080808;
 }
 
+.ceo-box {
+    max-width: 850px;
+    margin: 45px auto 0;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 40px;
+    align-items: center;
+    text-align: left;
+}
 
 .ceo {
-    width: 200px;
-    height: 200px;
+    width: 250px;
+    height: 250px;
     border-radius: 50%;
     object-fit: cover;
     border: 4px solid gold;
 }
 
-
-.redes {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 15px;
-}
-
-
-.botao {
-    background: gold;
-    color: black;
-    padding: 12px 25px;
-    border-radius: 25px;
-    text-decoration: none;
+.ceo-info .cargo {
+    color: red;
+    font-size: 12px;
     font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.ceo-info h3 {
+    color: gold;
+    font-size: 30px;
+    margin: 5px 0;
+}
+
+.ceo-info p:not(.cargo) {
+    color: #aaa;
 }
 
 
-.botao:hover {
-    background: red;
-    color: white;
+/* CTA */
+
+.cta {
+    text-align: center;
+    background:
+        linear-gradient(rgba(20, 15, 0, 0.7), rgba(5, 5, 5, 0.95)),
+        #111;
 }
 
+.cta > p:not(.mini-titulo) {
+    color: #aaa;
+    max-width: 600px;
+    margin: 0 auto 30px;
+}
+
+
+/* FOOTER */
 
 footer {
-    background: #111;
-    padding: 20px;
+    padding: 40px 20px;
     text-align: center;
+    background: #030303;
     border-top: 2px solid red;
-}    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 15px;
 }
 
-.botao {
-    display: inline-block;
-    margin: 5px;
-    padding: 12px 25px;
-    background: gold;
-    color: black;
-    text-decoration: none;
-    border-radius: 25px;
-    font-weight: bold;
-}.ceo {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 4px solid gold;
-}
-
-.perfil {
-    text-align: center;
-}
-o
-.botao {
-    display: inline-block;
-    margin: 10px;
-    padding: 12px 25px;
-    background: gold;
-    color: black;
-    text-decoration: none;
-    border-radius: 25px;
-    font-weight: bold;
-}
-
-.botao:hover {
-    background: red;
-    color: white;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #000;
-    color: white;
-}
-
-
-.topo {
-    background: #0a0a0a;
-    padding: 20px;
-    border-bottom: 3px solid gold;
-}
-
-
-.marca {
+.footer-logo {
     display: flex;
     align-items: center;
-    gap: 15px;
-}
-
-
-.logo {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-
-h1 {
-    color: gold;
-    font-size: 28px;
-    margin: 0;
-}
-
-
-.topo p {
-    color: #ccc;
-}
-
-
-nav {
-    margin-top: 20px;
-}
-
-
-nav a {
-    color: white;
-    text-decoration: none;
-    margin-right: 15px;
-    font-weight: bold;
-}
-
-
-nav a:hover {
-    color: gold;
-}
-
-
-section {
-    padding: 30px;
-    text-align: center;
-}
-
-
-h2 {
-    color: red;
-    font-size: 28px;
-}
-
-
-h3 {
-    color: gold;
-}
-
-
-footer {
-    background: #111;
-    text-align: center;
-    padding: 20px;
-    border-top: 2px solid red;
-}
-    margin: 0;
-.logo {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-}O
-    font-family: Arial, sans-serif;
-    background: #000;
-    color: white;
-}
-
-header {
-    background: #b30000;
-    padding: 25px;
-    text-align: center;
-}
-
-h1 {
-    color: gold;
-}
-
-nav a {
-    color: white;
-    text-decoration: none;
-    margin: 10px;
-    font-weight: bold;
-}
-
-section {
-    padding: 30px;
-    text-align: center;
-}
-
-.botao {
-    background: gold;
-    color: black;
-    padding: 12px 25px;
-    border-radius: 20px;
-    text-decoration: none;
-}
-
-footer {
-    background: #111;
-    padding: 15px;
-    text-align: center;
-}
-O
-
-.redes {
-    display: flex;
     justify-content: center;
-    flex-wrap: wrap;
+    gap: 10px;
 }
 
+.footer-logo img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid gold;
+}
+
+.footer-logo strong {
+    color: gold;
+    font-size: 14px;
+}
+
+footer p {
+    color: #888;
+}
+
+.copyright {
+    font-size: 12px;
+}
+
+
+/* TELEMÓVEL */
+
+@media (max-width: 800px) {
+
+    .barra {
+        flex-direction: column;
+    }
+
+    nav {
+        width: 100%;
+    }
+
+    nav a {
+        font-size: 12px;
+        padding: 7px 9px;
+    }
+
+    .hero-home {
+        min-height: 600px;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+    .destaque {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .destaque > div:first-child {
+        padding: 0;
+    }
+
+    .ceo-box {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .ceo-foto {
+        text-align: center;
+    }
+
+    .ceo {
+        width: 210px;
+        height: 210px;
+    }
+}
+
+@media (max-width: 500px) {
+
+    section {
+        padding: 65px 18px;
+    }
+
+    .hero-home h1 {
+        font-size: 42px;
+    }
+
+    .descricao {
+        font-size: 16px;
+    }
+
+    .botoes {
+        flex-direction: column;
+    }
+
+    .btn {
+        text-align: center;
+    }
+}
+EOF

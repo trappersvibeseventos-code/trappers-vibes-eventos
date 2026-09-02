@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="TRAPPERS IA — Inteligência artificial para artistas, rappers e produtores.">
+    <title>TRAPPERS IA - TRAPPERS VIBES</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .ia-area {
+            max-width: 900px;
+            margin: auto;
+            text-align: center;
+        }
+
+        .ia-box {
+            margin-top: 35px;
+            background: #101010;
+            border: 1px solid #292929;
+            border-radius: 12px;
+            padding: 30px;
+        }
+
+        #pergunta {
+            width: 100%;
+            min-height: 150px;
+            resize: vertical;
+            padding: 18px;
+            background: #050505;
+            color: white;
+            border: 1px solid #333;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        #pergunta:focus {
+            border-color: gold;
+        }
+
+        .botao-ia {
+            margin-top: 18px;
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 6px;
+            background: gold;
+            color: #050505;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .botao-ia:hover {
+            transform: translateY(-2px);
+        }
+
+        #resposta {
+            margin-top: 25px;
+            padding: 20px;
+            min-height: 80px;
+            text-align: left;
+            background: #080808;
+            border-left: 3px solid gold;
+            border-radius: 6px;
+            color: #ddd;
+            line-height: 1.7;
+        }
+
+        .ia-cards {
+            margin-top: 35px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .ia-card {
+            background: #101010;
+            border: 1px solid #252525;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .ia-card h3 {
+            color: gold;
+        }
+
+        .ia-card p {
+            color: #999;
+        }
+
+        @media (max-width: 600px) {
+            .ia-box {
+                padding: 18px;
+            }
+
+            .ia-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="topo">
+    <div class="barra">
+
+        <a href="index.html" class="marca-site">
+            <img src="img/logo.png?v=2?v=2" class="logo" alt="Logo Trappers Vibes">
+
+            <div>
+                <strong>TRAPPERS VIBES</strong>
+                <span>EVENTOS SOLUTION</span>
+            </div>
+        </a>
+
+        <nav>
+            <a href="index.html">Início</a>
+            <a href="artistas.html">Artistas</a>
+            <a href="eventos.html">Eventos</a>
+            <a href="trappers-ai.html" class="ativo">🤖 Trappers IA</a>
+            <a href="contacto.html">Contacto</a>
+        </nav>
+
+    </div>
+</header>
+
+<main>
+
+<section class="cta">
+
+    <div class="ia-area">
+
+        <p class="mini-titulo">INTELIGÊNCIA ARTIFICIAL</p>
+
+        <h1>
+            TRAPPERS <span>IA</span> 🤖
+        </h1>
+
+        <p>
+            O teu assistente inteligente para música, Rap, Trap,
+            produção musical, carreira e marketing.
+        </p>
+
+        <div class="ia-box">
+
+            <textarea
+                id="pergunta"
+                placeholder="Escreve aqui a tua pergunta... Ex: Como melhorar o meu flow no Trap?"
+            ></textarea>
+
+            <button class="botao-ia" onclick="perguntarIA()">
+                🚀 Perguntar à TRAPPERS IA
+            </button>
+
+            <div id="resposta">
+                🤖 A TRAPPERS IA está pronta para responder.
+            </div>
+
+        </div>
+
+        <div class="ia-cards">
+
+            <div class="ia-card">
+                <h3>🎤 Música</h3>
+                <p>
+                    Ideias para músicas, refrões, versos,
+                    temas e composição.
+                </p>
+            </div>
+
+            <div class="ia-card">
+                <h3>🔥 Flow & Rap</h3>
+                <p>
+                    Dicas para melhorar flow, métrica,
+                    delivery e escrita.
+                </p>
+            </div>
+
+            <div class="ia-card">
+                <h3>📢 Marketing</h3>
+                <p>
+                    Estratégias para divulgar músicas,
+                    TikTok, Instagram e YouTube.
+                </p>
+            </div>
+
+            <div class="ia-card">
+                <h3>💎 Carreira</h3>
+                <p>
+                    Conselhos para artistas,
+                    produtores e novos talentos.
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+</main>
+
+<footer>
+
+    <div class="footer-logo">
+        <img src="img/logo.png?v=2?v=2" alt="Logo">
+        <strong>TRAPPERS VIBES EVENTOS SOLUTION</strong>
+    </div>
+
+    <p>Eventos • Música • Cultura • Promoção</p>
+
+    <p class="copyright">
+        © 2026 TRAPPERS VIBES EVENTOS SOLUTION.
+        Todos os direitos reservados.
+    </p>
+
+</footer>
+
+<script>
+
+async function perguntarIA() {
+
+    const pergunta =
+        document.getElementById("pergunta").value.trim();
+
+    const resposta =
+        document.getElementById("resposta");
+
+    if (!pergunta) {
+
+        resposta.innerHTML =
+            "⚠️ Escreve uma pergunta primeiro.";
+
+        return;
+    }
+
+    resposta.innerHTML =
+        "🤖 A TRAPPERS IA está a pensar...";
+
+    try {
+
+        const pedido = await fetch(
+            "http://127.0.0.1:3000/perguntar",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    pergunta: pergunta
+                })
+            }
+        );
+
+        const dados = await pedido.json();
+
+        if (dados.resposta) {
+
+            resposta.innerHTML =
+                dados.resposta.replace(/\n/g, "<br>");
+
+        } else {
+
+            resposta.innerHTML =
+                "❌ Não foi possível obter uma resposta.";
+
+        }
+
+    } catch (erro) {
+
+        console.error(erro);
+
+        resposta.innerHTML =
+            "❌ Não consegui conectar à TRAPPERS IA. " +
+            "Verifica se o servidor está online.";
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>

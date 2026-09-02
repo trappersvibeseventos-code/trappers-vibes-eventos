@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gerir Serviços - TRAPPERS VIBES</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#080808;color:white}
+header{background:#111;border-bottom:1px solid gold;padding:18px 20px}
+header h1{margin:0 0 12px;color:gold;font-size:24px}
+nav a{color:white;text-decoration:none;margin-right:15px;font-weight:bold}
+nav a:hover{color:gold}
+.container{max-width:1100px;margin:auto;padding:25px 15px}
+.painel{background:#111;border:1px solid #333;border-radius:15px;padding:22px;margin-bottom:25px}
+h2{color:gold}
+label{display:block;margin-top:14px;margin-bottom:6px;font-weight:bold}
+input,textarea{width:100%;padding:12px;border-radius:8px;border:1px solid #444;background:#080808;color:white}
+textarea{min-height:90px;resize:vertical}
+button{border:0;border-radius:8px;padding:12px 18px;margin-top:18px;background:#b30000;color:white;font-weight:bold;cursor:pointer}
+button:hover{background:gold;color:black}
+.cancelar{background:#444;margin-left:8px}
+.lista{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}
+.servico{background:#151515;border:1px solid #333;border-radius:14px;padding:20px}
+.servico h3{color:gold;margin-top:0}
+.preco{font-size:23px;font-weight:bold;color:gold;margin:12px 0}
+.acoes button{margin-right:5px}
+.editar{background:#555}
+.remover{background:#8b0000}
+#mensagem{margin-top:15px;font-weight:bold}
+</style>
+</head>
+<body>
+
+<header>
+<h1>💰 Gestão de Serviços</h1>
+<nav>
+<a href="admin.html">🏠 Painel</a>
+<a href="admin-artistas.html">🎤 Artistas</a>
+<a href="admin-trabalhos.html">📋 Trabalhos</a>
+<a href="servicos.html">🌐 Ver Serviços</a>
+</nav>
+</header>
+
+<div class="container">
+<div class="painel">
+<h2 id="tituloForm">➕ Adicionar Serviço</h2>
+
+<form id="formServico">
+<label>Categoria</label>
+<input id="categoria" placeholder="Ex.: Distribuição Musical" required>
+
+<label>Nome do serviço/plano</label>
+<input id="nome" placeholder="Ex.: Básico" required>
+
+<label>Descrição</label>
+<textarea id="descricao" placeholder="Descrição do serviço"></textarea>
+
+<label>Preço</label>
+<input id="preco" placeholder="Ex.: 5.000 Kz" required>
+
+<label>WhatsApp</label>
+<input id="whatsapp" value="244934597052" placeholder="Número do WhatsApp">
+
+<button type="submit" id="btnSalvar">💾 Adicionar Serviço</button>
+<button type="button" class="cancelar" id="btnCancelar" style="display:none">Cancelar edição</button>
+</form>
+
+<div id="mensagem"></div>
+</div>
+
+<div class="painel">
+<h2>📋 Serviços cadastrados</h2>
+<div id="lista" class="lista"></div>
+</div>
+</div>
+
+<script>
+const API = "http://127.0.0.1:3001";
+let servicoEditando = null;
+
+const form = document.getElementById("formServico");
+const lista = document.getElementById("lista");
+const mensagem = document.getElementById("mensagem");
+
+function escapeHTML(text){
+    return String(text || "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
+
+function mostrarMensagem(texto, erro=false){
+    mensagem.textContent = texto;
+    mensagem.style.color = erro ? "#ff5555" : "gold";
+    setTimeout(() => mensagem.textContent = "", 3000);
+}
+
+async function obterServicos(){
+    const resposta = await fetch(API + "/servicos");
+    const dados = await resposta.json();
+    return dados.servicos || [];
+}
+
+async function carregarServicos(){
+    try{
+        const servicos = await obterServicos();
+
+        if(servicos.length === 0){
+            lista.innerHTML = `
+                <div class="servico">
+                    <h3>📭 Nenhum serviço</h3>
+                    <p>Adicione o primeiro serviço acima.</p>
+                </div>`;
+            return;
+        }
+
+        lista.innerHTML = servicos.map(servico => `
+            <div class="servico">
+                <small>${escapeHTML(servico.categoria)}</small>
+                <h3>${escapeHTML(servico.nome)}</h3>
+                <p>${escapeHTML(servico.descricao)}</p>
+                <div class="preco">${escapeHTML(servico.preco)}</div>
+                <div class="acoes">
+                    <button class="editar" onclick="editarServico('${servico.id}')">✏️ Editar</button>
+                    <button class="remover" onclick="removerServico('${servico.id}')">🗑️ Remover</button>
+                </div>
+            </div>
+        `).join("");
+
+    }catch(erro){
+        lista.innerHTML = `
+            <div class="servico">
+                <h3>❌ Erro</h3>
+                <p>Não foi possível carregar os serviços.</p>
+            </div>`;
+        console.error(erro);
+    }
+}
+
+async function editarServico(id){
+    const servicos = await obterServicos();
+    const servico = servicos.find(s => s.id === id);
+
+    if(!servico) return;
+
+    servicoEditando = id;
+
+    document.getElementById("categoria").value = servico.categoria || "";
+    document.getElementById("nome").value = servico.nome || "";
+    document.getElementById("descricao").value = servico.descricao || "";
+    document.getElementById("preco").value = servico.preco || "";
+    document.getElementById("whatsapp").value = servico.whatsapp || "";
+
+    document.getElementById("tituloForm").textContent = "✏️ Editar Serviço";
+    document.getElementById("btnSalvar").textContent = "💾 Guardar Alterações";
+    document.getElementById("btnCancelar").style.display = "inline-block";
+
+    window.scrollTo({top:0, behavior:"smooth"});
+}
+
+document.getElementById("btnCancelar").addEventListener("click", () => {
+    servicoEditando = null;
+    form.reset();
+    document.getElementById("whatsapp").value = "244934597052";
+    document.getElementById("tituloForm").textContent = "➕ Adicionar Serviço";
+    document.getElementById("btnSalvar").textContent = "💾 Adicionar Serviço";
+    document.getElementById("btnCancelar").style.display = "none";
+});
+
+form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const dados = {
+        categoria: document.getElementById("categoria").value,
+        nome: document.getElementById("nome").value,
+        descricao: document.getElementById("descricao").value,
+        preco: document.getElementById("preco").value,
+        whatsapp: document.getElementById("whatsapp").value
+    };
+
+    try{
+        const resposta = await fetch(
+            API + (servicoEditando ? "/servicos/" + servicoEditando : "/servicos"),
+            {
+                method: servicoEditando ? "PUT" : "POST",
+                headers: {"Content-Type":"application/json"},
+                body: JSON.stringify(dados)
+            }
+        );
+
+        const resultado = await resposta.json();
+
+        if(!resposta.ok){
+            throw new Error(resultado.erro || "Erro ao guardar serviço.");
+        }
+
+        mostrarMensagem(
+            servicoEditando
+            ? "✅ Serviço atualizado com sucesso!"
+            : "✅ Serviço adicionado com sucesso!"
+        );
+
+        servicoEditando = null;
+        form.reset();
+
+        document.getElementById("whatsapp").value = "244934597052";
+        document.getElementById("tituloForm").textContent = "➕ Adicionar Serviço";
+        document.getElementById("btnSalvar").textContent = "💾 Adicionar Serviço";
+        document.getElementById("btnCancelar").style.display = "none";
+
+        carregarServicos();
+
+    }catch(erro){
+        mostrarMensagem("❌ " + erro.message, true);
+    }
+});
+
+async function removerServico(id){
+    if(!confirm("Tem certeza que deseja remover este serviço?")) return;
+
+    try{
+        const resposta = await fetch(API + "/servicos/" + id, {
+            method:"DELETE"
+        });
+
+        const resultado = await resposta.json();
+
+        if(!resposta.ok){
+            throw new Error(resultado.erro || "Erro ao remover.");
+        }
+
+        mostrarMensagem("✅ Serviço removido com sucesso!");
+        carregarServicos();
+
+    }catch(erro){
+        mostrarMensagem("❌ " + erro.message, true);
+    }
+}
+
+carregarServicos();
+</script>
+
+</body>
+</html>

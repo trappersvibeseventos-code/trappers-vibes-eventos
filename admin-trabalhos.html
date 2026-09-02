@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestão de Trabalhos | TRAPPERS VIBES</title>
+<link rel="stylesheet" href="style.css">
+
+<style>
+.admin-page{max-width:1100px;margin:40px auto;padding:20px}
+.admin-header{margin-bottom:30px}
+.admin-header h1{margin-bottom:8px}
+
+.admin-box{
+    padding:25px;
+    margin-bottom:25px;
+    border-radius:16px;
+    border:1px solid rgba(212,175,55,.25);
+    background:rgba(255,255,255,.03)
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:15px
+}
+
+input,select,textarea{
+    width:100%;
+    box-sizing:border-box;
+    padding:13px;
+    border-radius:8px;
+    border:1px solid rgba(212,175,55,.3);
+    background:#111;
+    color:#fff;
+    margin-top:6px
+}
+
+textarea{min-height:100px;resize:vertical}
+label{font-weight:bold}
+
+.admin-btn{
+    display:inline-block;
+    margin-top:15px;
+    padding:12px 20px;
+    border-radius:8px;
+    background:#d4af37;
+    color:#000;
+    text-decoration:none;
+    font-weight:bold;
+    border:none;
+    cursor:pointer
+}
+
+.admin-btn:hover{opacity:.85}
+.btn-danger{background:#8b0000;color:#fff}
+.btn-secondary{background:#333;color:#fff}
+
+.message{
+    margin-top:15px;
+    padding:12px;
+    border-radius:8px;
+    display:none
+}
+
+.trabalho{
+    border:1px solid rgba(212,175,55,.2);
+    border-radius:12px;
+    padding:18px;
+    margin-top:15px
+}
+
+.trabalho h3{margin-top:0}
+.trabalho p{color:#bbb}
+.codigo{color:#d4af37;font-weight:bold}
+
+.progress{
+    width:100%;
+    height:10px;
+    background:#222;
+    border-radius:10px;
+    overflow:hidden
+}
+
+.progress-bar{
+    height:100%;
+    background:#d4af37
+}
+
+.actions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap
+}
+
+.hidden{display:none}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="container">
+<nav>
+<a href="admin.html">← Painel</a>
+<a href="index.html">Site</a>
+<a href="consultar.html">Consultar Serviço</a>
+</nav>
+</div>
+</header>
+
+<main class="admin-page">
+
+<section class="admin-header">
+<h1>📋 Gestão de Trabalhos</h1>
+<p>TRAPPERS VIBES EVENTOS SOLUTION 🌍💎</p>
+</section>
+
+<section class="admin-box">
+
+<h2 id="formTitulo">➕ Criar novo trabalho</h2>
+
+<form id="trabalhoForm">
+
+<div class="form-grid">
+
+<div>
+<label>Código</label>
+<input id="codigo" placeholder="Ex: TV-2026-00001" required>
+</div>
+
+<div>
+<label>Cliente</label>
+<input id="cliente" placeholder="Nome do cliente" required>
+</div>
+
+<div>
+<label>Serviço</label>
+<select id="servico" required>
+<option value="">Selecionar serviço</option>
+<option>Distribuição Musical - Básico</option>
+<option>Distribuição Musical - Profissional</option>
+<option>Distribuição Musical - Premium</option>
+<option>Capas Musicais - Básico</option>
+<option>Capas Musicais - Profissional</option>
+<option>Capas Musicais - Premium</option>
+<option>Plano de Marketing</option>
+<option>Promoção na TRAPPERS VIBES TV</option>
+<option>Divulgação de Música e Artistas</option>
+<option>Promoção de Eventos</option>
+</select>
+</div>
+
+<div>
+<label>Estado</label>
+<select id="estado">
+<option>Recebido</option>
+<option>Em produção</option>
+<option>Em revisão</option>
+<option>Concluído</option>
+<option>Cancelado</option>
+</select>
+</div>
+
+<div>
+<label>Progresso (%)</label>
+<input id="progresso" type="number" min="0" max="100" value="0" required>
+</div>
+
+<div>
+<label>Responsável</label>
+<input id="responsavel" value="TRAPPERS VIBES EVENTOS" required>
+</div>
+
+</div>
+
+<div style="margin-top:15px">
+<label>Observações</label>
+<textarea id="observacoes" placeholder="Informações sobre o trabalho..."></textarea>
+</div>
+
+<div class="actions">
+<button class="admin-btn" type="submit" id="submitBtn">💾 Criar Trabalho</button>
+<button class="admin-btn btn-secondary hidden" type="button" onclick="cancelarEdicao()">Cancelar</button>
+</div>
+
+<div id="message" class="message"></div>
+
+</form>
+
+</section>
+
+<section class="admin-box">
+
+<h2>🔎 Pesquisar trabalhos</h2>
+
+<input id="pesquisa" placeholder="Pesquisar por código, cliente ou serviço..." oninput="filtrarTrabalhos()">
+
+</section>
+
+<section class="admin-box">
+
+<h2>📋 Trabalhos cadastrados</h2>
+
+<button class="admin-btn" onclick="carregarTrabalhos()">🔄 Atualizar lista</button>
+
+<div id="lista">
+<p>A carregar...</p>
+</div>
+
+</section>
+
+</main>
+
+<script>
+
+const API = "http://127.0.0.1:3001";
+
+const form = document.getElementById("trabalhoForm");
+const message = document.getElementById("message");
+const lista = document.getElementById("lista");
+const pesquisa = document.getElementById("pesquisa");
+
+let trabalhos = [];
+let codigoEditando = null;
+
+form.addEventListener("submit", async function(e){
+
+    e.preventDefault();
+
+    const trabalho = {
+        codigo: document.getElementById("codigo").value.trim(),
+        cliente: document.getElementById("cliente").value.trim(),
+        servico: document.getElementById("servico").value,
+        estado: document.getElementById("estado").value,
+        progresso: Number(document.getElementById("progresso").value),
+        responsavel: document.getElementById("responsavel").value.trim(),
+        ultimaAtualizacao: new Date().toLocaleDateString("pt-PT"),
+        observacoes: document.getElementById("observacoes").value.trim()
+    };
+
+    try{
+
+        let resposta;
+
+        if(codigoEditando){
+
+            resposta = await fetch(API + "/trabalhos/" + encodeURIComponent(codigoEditando),{
+                method:"PUT",
+                headers:{"Content-Type":"application/json"},
+                body:JSON.stringify(trabalho)
+            });
+
+        }else{
+
+            resposta = await fetch(API + "/trabalhos",{
+                method:"POST",
+                headers:{"Content-Type":"application/json"},
+                body:JSON.stringify(trabalho)
+            });
+
+        }
+
+        const dados = await resposta.json();
+
+        message.style.display="block";
+
+        if(resposta.ok){
+
+            message.textContent = codigoEditando
+                ? "✅ Trabalho atualizado com sucesso!"
+                : "✅ Trabalho criado com sucesso!";
+
+            cancelarEdicao();
+            carregarTrabalhos();
+
+        }else{
+
+            message.textContent="❌ "+(dados.erro || "Não foi possível guardar.");
+
+        }
+
+    }catch(erro){
+
+        message.style.display="block";
+        message.textContent="❌ Servidor administrativo indisponível.";
+
+    }
+
+});
+
+async function carregarTrabalhos(){
+
+    try{
+
+        const resposta = await fetch(API + "/trabalhos");
+        const dados = await resposta.json();
+
+        trabalhos = dados.trabalhos || [];
+
+        renderizarTrabalhos(trabalhos);
+
+    }catch(erro){
+
+        lista.innerHTML="<p>❌ Não foi possível carregar os trabalhos.</p>";
+
+    }
+
+}
+
+function renderizarTrabalhos(listaTrabalhos){
+
+    if(listaTrabalhos.length===0){
+
+        lista.innerHTML="<p>Nenhum trabalho encontrado.</p>";
+        return;
+
+    }
+
+    lista.innerHTML=listaTrabalhos.map(t => `
+
+        <div class="trabalho">
+
+            <h3>${escapeHTML(t.cliente)}</h3>
+
+            <p class="codigo">Código: ${escapeHTML(t.codigo)}</p>
+
+            <p><strong>Serviço:</strong> ${escapeHTML(t.servico)}</p>
+
+            <p><strong>Estado:</strong> ${escapeHTML(t.estado)}</p>
+
+            <p><strong>Responsável:</strong> ${escapeHTML(t.responsavel)}</p>
+
+            <p><strong>Última atualização:</strong> ${escapeHTML(t.ultimaAtualizacao)}</p>
+
+            <p><strong>Progresso:</strong> ${Number(t.progresso)||0}%</p>
+
+            <div class="progress">
+                <div class="progress-bar" style="width:${Math.min(100,Math.max(0,Number(t.progresso)||0))}%"></div>
+            </div>
+
+            <p><strong>Observações:</strong><br>
+            ${escapeHTML(t.observacoes || "Sem observações.")}</p>
+
+            <div class="actions">
+
+                <button class="admin-btn" onclick="editarTrabalho('${escapeHTML(t.codigo)}')">
+                    ✏️ Editar
+                </button>
+
+                <button class="admin-btn btn-danger" onclick="apagarTrabalho('${escapeHTML(t.codigo)}')">
+                    🗑️ Apagar
+                </button>
+
+            </div>
+
+        </div>
+
+    `).join("");
+
+}
+
+function filtrarTrabalhos(){
+
+    const termo=pesquisa.value.toLowerCase().trim();
+
+    const filtrados=trabalhos.filter(t =>
+
+        String(t.codigo).toLowerCase().includes(termo) ||
+        String(t.cliente).toLowerCase().includes(termo) ||
+        String(t.servico).toLowerCase().includes(termo)
+
+    );
+
+    renderizarTrabalhos(filtrados);
+
+}
+
+function editarTrabalho(codigo){
+
+    const t=trabalhos.find(item => item.codigo === codigo);
+
+    if(!t) return;
+
+    codigoEditando=codigo;
+
+    document.getElementById("codigo").value=t.codigo;
+    document.getElementById("codigo").readOnly=true;
+    document.getElementById("cliente").value=t.cliente;
+    document.getElementById("servico").value=t.servico;
+    document.getElementById("estado").value=t.estado;
+    document.getElementById("progresso").value=t.progresso;
+    document.getElementById("responsavel").value=t.responsavel;
+    document.getElementById("observacoes").value=t.observacoes || "";
+
+    document.getElementById("formTitulo").textContent="✏️ Editar trabalho";
+    document.getElementById("submitBtn").textContent="💾 Guardar alterações";
+
+    window.scrollTo({top:0,behavior:"smooth"});
+
+}
+
+function cancelarEdicao(){
+
+    codigoEditando=null;
+
+    form.reset();
+
+    document.getElementById("codigo").readOnly=false;
+    document.getElementById("responsavel").value="TRAPPERS VIBES EVENTOS";
+
+    document.getElementById("formTitulo").textContent="➕ Criar novo trabalho";
+    document.getElementById("submitBtn").textContent="💾 Criar Trabalho";
+
+}
+
+async function apagarTrabalho(codigo){
+
+    if(!confirm("Tem certeza que deseja apagar o trabalho " + codigo + "?")){
+        return;
+    }
+
+    try{
+
+        const resposta=await fetch(
+            API + "/trabalhos/" + encodeURIComponent(codigo),
+            {method:"DELETE"}
+        );
+
+        const dados=await resposta.json();
+
+        if(resposta.ok){
+
+            alert("✅ Trabalho apagado com sucesso.");
+            carregarTrabalhos();
+
+        }else{
+
+            alert("❌ " + (dados.erro || "Não foi possível apagar."));
+
+        }
+
+    }catch(erro){
+
+        alert("❌ Servidor administrativo indisponível.");
+
+    }
+
+}
+
+function escapeHTML(text){
+
+    return String(text ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+carregarTrabalhos();
+
+</script>
+
+</body>
+</html>

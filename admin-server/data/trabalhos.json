@@ -1,0 +1,24 @@
+{
+  "trabalhos": [
+    {
+      "codigo": "TV-2026-00125",
+      "cliente": "Cleuvio Trapstar",
+      "servico": "Promoção na TRAPPERS VIBES TV",
+      "estado": "Concluído",
+      "progresso": 65,
+      "responsavel": "TRAPPERS VIBES EVENTOS",
+      "ultimaAtualizacao": "02/09/2026",
+      "observacoes": "O trabalho está em andamento."
+    },
+    {
+      "codigo": "TV-2026-0025",
+      "cliente": "Cleuvio Trapstar",
+      "servico": "Promoção na TRAPPERS VIBES TV",
+      "estado": "Em produção",
+      "progresso": 65,
+      "responsavel": "TRAPPERS VIBES EVENTOS",
+      "ultimaAtualizacao": "02/09/2026",
+      "observacoes": "Está sendo feito a promoção na Trappers vibes TV"
+    }
+  ]
+}

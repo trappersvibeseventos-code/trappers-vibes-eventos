@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Admin | TRAPPERS VIBES</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .admin-page {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .admin-header {
+            margin-bottom: 30px;
+        }
+
+        .admin-header h1 {
+            margin-bottom: 8px;
+        }
+
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .admin-card {
+            padding: 25px;
+            border-radius: 16px;
+            border: 1px solid rgba(212, 175, 55, .25);
+            background: rgba(255,255,255,.03);
+        }
+
+        .admin-card h2 {
+            margin-top: 0;
+        }
+
+        .admin-card p {
+            color: #aaa;
+            line-height: 1.6;
+        }
+
+        .admin-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            background: #d4af37;
+            color: #000;
+            text-decoration: none;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+        }
+
+        .admin-btn:hover {
+            opacity: .85;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="container">
+        <nav>
+            <a href="index.html">Início</a>
+            <a href="artistas.html">Artistas</a>
+            <a href="eventos.html">Eventos</a>
+            <a href="servicos.html">Serviços</a>
+            <a href="consultar.html">Consultar Serviço</a>
+            <a href="contacto.html">Contacto</a>
+        </nav>
+    </div>
+</header>
+
+<main class="admin-page">
+
+    <section class="admin-header">
+        <h1>⚙️ Painel Administrativo</h1>
+        <p>TRAPPERS VIBES EVENTOS SOLUTION 🌍💎</p>
+    </section>
+
+    <section class="admin-grid">
+
+        <div class="admin-card">
+            <h2>📋 Trabalhos</h2>
+            <p>Criar, consultar, atualizar o progresso e gerir os trabalhos dos clientes.</p>
+            <a class="admin-btn" href="admin-trabalhos.html">Gerir Trabalhos</a>
+        </div>
+
+        <div class="admin-card">
+            <h2>🎤 Artistas</h2>
+            <p>Adicionar, editar ou remover artistas da TRAPPERS VIBES.</p>
+            <a class="admin-btn" href="admin-artistas.html">Gerir Artistas</a>
+        </div>
+
+        <div class="admin-card">
+            <h2>💰 Serviços</h2>
+            <p>Editar serviços, preços e informações apresentadas aos clientes.</p>
+            <a class="admin-btn" href="admin-servicos.html">Gerir Serviços</a>
+        </div>
+
+        <div class="admin-card">
+            <h2>🎟️ Eventos</h2>
+            <p>Adicionar e atualizar eventos, datas, locais e informações.</p>
+            <button class="admin-btn">Gerir Eventos</button>
+        </div>
+
+        <div class="admin-card">
+            <h2>📰 Conteúdo</h2>
+            <p>Publicar e editar notícias e outros conteúdos do site.</p>
+            <button class="admin-btn">Gerir Conteúdo</button>
+        </div>
+
+        <div class="admin-card">
+            <h2>🔐 Segurança</h2>
+            <p>Área reservada ao administrador. A autenticação será adicionada no próximo passo.</p>
+        </div>
+
+    </section>
+
+</main>
+
+</body>
+</html>

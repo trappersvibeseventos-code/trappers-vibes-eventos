@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login Admin | TRAPPERS VIBES</title>
+<link rel="stylesheet" href="style.css">
+
+<style>
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.login-box {
+    width: 100%;
+    max-width: 420px;
+    padding: 35px;
+    border-radius: 20px;
+    border: 1px solid rgba(212,175,55,.3);
+    background: rgba(255,255,255,.04);
+    text-align: center;
+}
+
+.login-logo {
+    width: 90px;
+    margin-bottom: 15px;
+}
+
+.login-box h1 {
+    margin-bottom: 8px;
+}
+
+.login-box p {
+    color: #aaa;
+    margin-bottom: 25px;
+}
+
+.login-box input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,.15);
+    background: #111;
+    color: white;
+    outline: none;
+}
+
+.login-box input:focus {
+    border-color: #d4af37;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    background: #d4af37;
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.login-btn:hover {
+    opacity: .85;
+}
+
+#mensagem {
+    margin-top: 18px;
+    min-height: 22px;
+}
+</style>
+</head>
+
+<body>
+
+<main class="login-page">
+
+    <div class="login-box">
+
+        <img src="img/logo.png?v=3" class="login-logo" alt="TRAPPERS VIBES">
+
+        <h1>🔐 Área Administrativa</h1>
+
+        <p>Entre com a senha do administrador.</p>
+
+        <input
+            type="password"
+            id="senha"
+            placeholder="Senha do administrador"
+            autocomplete="current-password"
+        >
+
+        <button class="login-btn" onclick="entrar()">
+            Entrar no Painel
+        </button>
+
+        <div id="mensagem"></div>
+
+    </div>
+
+</main>
+
+<script>
+async function entrar() {
+    const senha = document.getElementById("senha").value;
+    const mensagem = document.getElementById("mensagem");
+
+    if (!senha) {
+        mensagem.textContent = "Digite a senha.";
+        return;
+    }
+
+    mensagem.textContent = "A verificar...";
+
+    try {
+        const resposta = await fetch("http://localhost:3001/admin/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ senha })
+        });
+
+        const dados = await resposta.json();
+
+        if (dados.sucesso) {
+            sessionStorage.setItem("trappersAdmin", "autorizado");
+            window.location.href = "admin.html";
+        } else {
+            mensagem.textContent = "❌ Senha incorreta.";
+        }
+
+    } catch (erro) {
+        mensagem.textContent = "⚠️ Servidor administrativo indisponível.";
+    }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestão de Artistas | TRAPPERS VIBES</title>
+<link rel="stylesheet" href="style.css">
+
+<style>
+.admin-page{max-width:1100px;margin:40px auto;padding:20px}
+.admin-header{margin-bottom:30px}
+.admin-header h1{margin-bottom:8px}
+
+.admin-box{
+    padding:25px;
+    margin-bottom:25px;
+    border-radius:16px;
+    border:1px solid rgba(212,175,55,.25);
+    background:rgba(255,255,255,.03)
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:15px
+}
+
+input,textarea{
+    width:100%;
+    box-sizing:border-box;
+    padding:13px;
+    border-radius:8px;
+    border:1px solid rgba(212,175,55,.3);
+    background:#111;
+    color:#fff;
+    margin-top:6px
+}
+
+textarea{min-height:100px;resize:vertical}
+label{font-weight:bold}
+
+.admin-btn{
+    display:inline-block;
+    margin-top:15px;
+    padding:12px 20px;
+    border-radius:8px;
+    background:#d4af37;
+    color:#000;
+    text-decoration:none;
+    font-weight:bold;
+    border:none;
+    cursor:pointer
+}
+
+.btn-danger{background:#8b0000;color:#fff}
+.btn-secondary{background:#333;color:#fff}
+
+.actions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap
+}
+
+.message{
+    margin-top:15px;
+    padding:12px;
+    border-radius:8px;
+    display:none
+}
+
+.artista{
+    border:1px solid rgba(212,175,55,.2);
+    border-radius:12px;
+    padding:18px;
+    margin-top:15px
+}
+
+.artista img{
+    width:100px;
+    height:100px;
+    object-fit:cover;
+    border-radius:50%;
+    border:2px solid #d4af37;
+    margin-bottom:10px
+}
+
+.hidden{display:none}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="container">
+<nav>
+<a href="admin.html">← Painel</a>
+<a href="index.html">Site</a>
+<a href="artistas.html">Ver Artistas</a>
+</nav>
+</div>
+</header>
+
+<main class="admin-page">
+
+<section class="admin-header">
+<h1>🎤 Gestão de Artistas</h1>
+<p>TRAPPERS VIBES EVENTOS SOLUTION 🌍💎</p>
+</section>
+
+<section class="admin-box">
+
+<h2 id="formTitulo">➕ Adicionar artista</h2>
+
+<form id="artistaForm">
+
+<div class="form-grid">
+
+<div>
+<label>Nome do artista</label>
+<input id="nome" placeholder="Ex: Cleuvio Trapstar" required>
+</div>
+
+<div>
+<label>Imagem</label>
+<input id="imagem" placeholder="Ex: img/cleuvio.jpg">
+</div>
+
+<div>
+<label>Instagram</label>
+<input id="instagram" placeholder="Link do Instagram">
+</div>
+
+<div>
+<label>YouTube</label>
+<input id="youtube" placeholder="Link do YouTube">
+</div>
+
+<div>
+<label>Spotify</label>
+<input id="spotify" placeholder="Link do Spotify">
+</div>
+
+</div>
+
+<div style="margin-top:15px">
+<label>Descrição</label>
+<textarea id="descricao" placeholder="Descrição do artista..."></textarea>
+</div>
+
+<div class="actions">
+<button class="admin-btn" type="submit" id="submitBtn">💾 Adicionar artista</button>
+<button class="admin-btn btn-secondary hidden" type="button" onclick="cancelarEdicao()">Cancelar</button>
+</div>
+
+<div id="message" class="message"></div>
+
+</form>
+
+</section>
+
+<section class="admin-box">
+
+<h2>🎤 Artistas cadastrados</h2>
+
+<div id="lista">
+<p>A carregar...</p>
+</div>
+
+</section>
+
+</main>
+
+<script>
+
+const API="http://127.0.0.1:3001";
+
+const form=document.getElementById("artistaForm");
+const lista=document.getElementById("lista");
+const message=document.getElementById("message");
+
+let artistas=[];
+let idEditando=null;
+
+form.addEventListener("submit",async function(e){
+
+    e.preventDefault();
+
+    const artista={
+        nome:document.getElementById("nome").value.trim(),
+        descricao:document.getElementById("descricao").value.trim(),
+        imagem:document.getElementById("imagem").value.trim(),
+        instagram:document.getElementById("instagram").value.trim(),
+        youtube:document.getElementById("youtube").value.trim(),
+        spotify:document.getElementById("spotify").value.trim()
+    };
+
+    try{
+
+        let resposta;
+
+        if(idEditando){
+
+            resposta=await fetch(
+                API+"/artistas/"+encodeURIComponent(idEditando),
+                {
+                    method:"PUT",
+                    headers:{"Content-Type":"application/json"},
+                    body:JSON.stringify(artista)
+                }
+            );
+
+        }else{
+
+            resposta=await fetch(
+                API+"/artistas",
+                {
+                    method:"POST",
+                    headers:{"Content-Type":"application/json"},
+                    body:JSON.stringify(artista)
+                }
+            );
+
+        }
+
+        const dados=await resposta.json();
+
+        message.style.display="block";
+
+        if(resposta.ok){
+
+            message.textContent=idEditando
+                ?"✅ Artista atualizado com sucesso!"
+                :"✅ Artista adicionado com sucesso!";
+
+            cancelarEdicao();
+            carregarArtistas();
+
+        }else{
+
+            message.textContent="❌ "+(dados.erro || "Erro ao guardar artista.");
+
+        }
+
+    }catch(erro){
+
+        message.style.display="block";
+        message.textContent="❌ Servidor administrativo indisponível.";
+
+    }
+
+});
+
+async function carregarArtistas(){
+
+    try{
+
+        const resposta=await fetch(API+"/artistas");
+        const dados=await resposta.json();
+
+        artistas=dados.artistas || [];
+
+        renderizarArtistas();
+
+    }catch(erro){
+
+        lista.innerHTML="<p>❌ Não foi possível carregar os artistas.</p>";
+
+    }
+
+}
+
+function renderizarArtistas(){
+
+    if(artistas.length===0){
+
+        lista.innerHTML="<p>Nenhum artista cadastrado.</p>";
+        return;
+
+    }
+
+    lista.innerHTML=artistas.map(a=>`
+
+        <div class="artista">
+
+            ${a.imagem ? `<img src="${escapeHTML(a.imagem)}" alt="${escapeHTML(a.nome)}">` : ""}
+
+            <h3>${escapeHTML(a.nome)}</h3>
+
+            <p>${escapeHTML(a.descricao || "Sem descrição.")}</p>
+
+            ${a.instagram ? `<p>📸 Instagram: <a href="${escapeHTML(a.instagram)}" target="_blank">Abrir</a></p>` : ""}
+            ${a.youtube ? `<p>▶️ YouTube: <a href="${escapeHTML(a.youtube)}" target="_blank">Abrir</a></p>` : ""}
+            ${a.spotify ? `<p>🎵 Spotify: <a href="${escapeHTML(a.spotify)}" target="_blank">Abrir</a></p>` : ""}
+
+            <div class="actions">
+
+                <button class="admin-btn" onclick="editarArtista('${escapeHTML(a.id)}')">
+                    ✏️ Editar
+                </button>
+
+                <button class="admin-btn btn-danger" onclick="apagarArtista('${escapeHTML(a.id)}')">
+                    🗑️ Remover
+                </button>
+
+            </div>
+
+        </div>
+
+    `).join("");
+
+}
+
+function editarArtista(id){
+
+    const artista=artistas.find(a=>a.id===id);
+
+    if(!artista)return;
+
+    idEditando=id;
+
+    document.getElementById("nome").value=artista.nome;
+    document.getElementById("descricao").value=artista.descricao || "";
+    document.getElementById("imagem").value=artista.imagem || "";
+    document.getElementById("instagram").value=artista.instagram || "";
+    document.getElementById("youtube").value=artista.youtube || "";
+    document.getElementById("spotify").value=artista.spotify || "";
+
+    document.getElementById("formTitulo").textContent="✏️ Editar artista";
+    document.getElementById("submitBtn").textContent="💾 Guardar alterações";
+
+    window.scrollTo({top:0,behavior:"smooth"});
+
+}
+
+function cancelarEdicao(){
+
+    idEditando=null;
+    form.reset();
+
+    document.getElementById("formTitulo").textContent="➕ Adicionar artista";
+    document.getElementById("submitBtn").textContent="💾 Adicionar artista";
+
+}
+
+async function apagarArtista(id){
+
+    const artista=artistas.find(a=>a.id===id);
+
+    if(!artista)return;
+
+    if(!confirm("Remover "+artista.nome+"?"))return;
+
+    try{
+
+        const resposta=await fetch(
+            API+"/artistas/"+encodeURIComponent(id),
+            {method:"DELETE"}
+        );
+
+        const dados=await resposta.json();
+
+        if(resposta.ok){
+
+            alert("✅ Artista removido.");
+            carregarArtistas();
+
+        }else{
+
+            alert("❌ "+(dados.erro || "Erro ao remover."));
+
+        }
+
+    }catch(erro){
+
+        alert("❌ Servidor administrativo indisponível.");
+
+    }
+
+}
+
+function escapeHTML(text){
+
+    return String(text ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+carregarArtistas();
+
+</script>
+
+</body>
+</html>
