@@ -198,7 +198,7 @@ async function consultarServico() {
 
     try {
         const resposta = await fetch(
-            "http://127.0.0.1:3001/trabalhos/" + encodeURIComponent(codigo)
+            "https://trappers-vibes-api.onrender.com/trabalhos/" + encodeURIComponent(codigo)
         );
 
         const dados = await resposta.json();
