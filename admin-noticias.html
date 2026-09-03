@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADM - Notícias | TRAPPERS VIBES</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.admin-container{max-width:1000px;margin:40px auto;padding:20px}
+.admin-box{background:#111;border:1px solid #333;border-radius:12px;padding:20px;margin-bottom:25px}
+.admin-box h2{color:#d4af37}
+.admin-box input,.admin-box textarea{width:100%;box-sizing:border-box;margin:8px 0;padding:12px;border-radius:7px;border:1px solid #444;background:#1b1b1b;color:#fff}
+.admin-box textarea{min-height:120px;resize:vertical}
+.admin-btn{padding:10px 16px;border:0;border-radius:7px;background:#d4af37;color:#000;font-weight:bold;cursor:pointer;margin:5px}
+.btn-danger{background:#e53935;color:#fff}
+.btn-secondary{background:#444;color:#fff}
+.noticia-item{border-top:1px solid #333;padding:18px 0}
+.noticia-item img{max-width:180px;border-radius:8px;margin:10px 0}
+.mensagem{margin:10px 0;font-weight:bold}
+</style>
+</head>
+<body>
+
+<header class="topo">
+<div class="barra">
+<a href="admin.html" class="marca-site">
+<strong>TRAPPERS VIBES</strong>
+<span>EVENTOS SOLUTION</span>
+</a>
+<nav>
+<a href="admin.html">ADM</a>
+<a href="index.html">Site</a>
+</nav>
+</div>
+</header>
+
+<main class="admin-container">
+
+<div class="admin-box">
+<h2>📰 Gerir Notícias</h2>
+<p>Crie, edite ou remova notícias do site.</p>
+
+<input type="hidden" id="noticiaId">
+
+<input id="titulo" type="text" placeholder="Título da notícia">
+
+<textarea id="descricao" placeholder="Descrição da notícia"></textarea>
+
+<input id="imagem" type="url" placeholder="URL da imagem (opcional)">
+
+<input id="data" type="date">
+
+<button class="admin-btn" onclick="guardarNoticia()">💾 Guardar notícia</button>
+<button class="admin-btn btn-secondary" onclick="limparFormulario()">Limpar</button>
+
+<div id="mensagem" class="mensagem"></div>
+</div>
+
+<div class="admin-box">
+<h2>📋 Notícias publicadas</h2>
+<div id="lista">A carregar...</div>
+</div>
+
+</main>
+
+<script>
+const API="https://trappers-vibes-api.onrender.com";
+const ADMIN_PASSWORD=sessionStorage.getItem("trappersAdminPassword");
+
+if(!ADMIN_PASSWORD){
+    window.location.href="admin-login.html";
+}
+
+async function carregarNoticias(){
+    try{
+        const resposta=await fetch(API+"/noticias");
+        const noticias=await resposta.json();
+
+        if(!noticias.length){
+            document.getElementById("lista").innerHTML="<p>Nenhuma notícia cadastrada.</p>";
+            return;
+        }
+
+        document.getElementById("lista").innerHTML=noticias.map(n=>`
+            <div class="noticia-item">
+                <h3>${esc(n.titulo)}</h3>
+                <p>${esc(n.descricao)}</p>
+                ${n.imagem ? `<img src="${esc(n.imagem)}" alt="">` : ""}
+                <small>📅 ${esc(n.data || "")}</small><br>
+                <button class="admin-btn" onclick='editarNoticia(${JSON.stringify(n)})'>✏️ Editar</button>
+                <button class="admin-btn btn-danger" onclick="apagarNoticia('${n.id}')">🗑️ Apagar</button>
+            </div>
+        `).join("");
+    }catch(e){
+        document.getElementById("lista").innerHTML="<p>Erro ao carregar notícias.</p>";
+    }
+}
+
+async function guardarNoticia(){
+    const id=document.getElementById("noticiaId").value;
+
+    const dados={
+        titulo:document.getElementById("titulo").value,
+        descricao:document.getElementById("descricao").value,
+        imagem:document.getElementById("imagem").value,
+        data:document.getElementById("data").value
+    };
+
+    if(!dados.titulo || !dados.descricao){
+        mostrarMensagem("Preencha o título e a descrição.", true);
+        return;
+    }
+
+    const url=id ? API+"/noticias/"+id : API+"/noticias";
+    const metodo=id ? "PUT" : "POST";
+
+    try{
+        const resposta=await fetch(url,{
+            method:metodo,
+            headers:{
+                "Content-Type":"application/json",
+                "Authorization":"Bearer "+ADMIN_PASSWORD
+            },
+            body:JSON.stringify(dados)
+        });
+
+        const resultado=await resposta.json();
+
+        if(!resposta.ok){
+            mostrarMensagem(resultado.erro || "Erro ao guardar.", true);
+            return;
+        }
+
+        mostrarMensagem(id ? "Notícia atualizada com sucesso!" : "Notícia criada com sucesso!");
+        limparFormulario();
+        carregarNoticias();
+    }catch(e){
+        mostrarMensagem("Erro de ligação com o servidor.", true);
+    }
+}
+
+function editarNoticia(n){
+    document.getElementById("noticiaId").value=n.id;
+    document.getElementById("titulo").value=n.titulo || "";
+    document.getElementById("descricao").value=n.descricao || "";
+    document.getElementById("imagem").value=n.imagem || "";
+    document.getElementById("data").value=n.data || "";
+    window.scrollTo({top:0,behavior:"smooth"});
+}
+
+async function apagarNoticia(id){
+    if(!confirm("Tem certeza que deseja apagar esta notícia?")) return;
+
+    try{
+        const resposta=await fetch(API+"/noticias/"+id,{
+            method:"DELETE",
+            headers:{
+                "Authorization":"Bearer "+ADMIN_PASSWORD
+            }
+        });
+
+        if(resposta.ok){
+            carregarNoticias();
+            mostrarMensagem("Notícia apagada com sucesso!");
+        }else{
+            mostrarMensagem("Não foi possível apagar a notícia.", true);
+        }
+    }catch(e){
+        mostrarMensagem("Erro de ligação com o servidor.", true);
+    }
+}
+
+function limparFormulario(){
+    document.getElementById("noticiaId").value="";
+    document.getElementById("titulo").value="";
+    document.getElementById("descricao").value="";
+    document.getElementById("imagem").value="";
+    document.getElementById("data").value="";
+}
+
+function mostrarMensagem(texto,erro=false){
+    const m=document.getElementById("mensagem");
+    m.textContent=texto;
+    m.style.color=erro ? "#ff5252" : "#d4af37";
+}
+
+function esc(valor){
+    return String(valor ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
+
+carregarNoticias();
+</script>
+
+</body>
+</html>
