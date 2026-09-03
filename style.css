@@ -459,3 +459,21 @@ EOF
         margin: 10px 0 0;
     }
 }
+
+/* BOTAO CONSULTAR SERVICO */
+.botao-consultar {
+    display: inline-block;
+    padding: 10px 16px;
+    background: #e53935;
+    color: #fff !important;
+    border-radius: 8px;
+    font-weight: bold;
+    text-decoration: none;
+    margin-left: 8px;
+    transition: 0.3s;
+}
+
+.botao-consultar:hover {
+    background: #ff5252;
+    transform: scale(1.04);
+}
