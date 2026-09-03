@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notícias | TRAPPERS VIBES</title>
+<link rel="stylesheet" href="style.css">
+
+<style>
+.noticias-container{
+    max-width:1100px;
+    margin:40px auto;
+    padding:20px;
+}
+
+.noticias-titulo{
+    text-align:center;
+    color:#d4af37;
+    margin-bottom:10px;
+}
+
+.noticias-subtitulo{
+    text-align:center;
+    color:#ccc;
+    margin-bottom:35px;
+}
+
+.noticias-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:25px;
+}
+
+.noticia-card{
+    background:#111;
+    border:1px solid #333;
+    border-radius:12px;
+    overflow:hidden;
+    transition:0.3s;
+}
+
+.noticia-card:hover{
+    transform:translateY(-5px);
+    border-color:#d4af37;
+}
+
+.noticia-card img{
+    width:100%;
+    height:200px;
+    object-fit:cover;
+}
+
+.noticia-conteudo{
+    padding:20px;
+}
+
+.noticia-conteudo h2{
+    color:#d4af37;
+    margin-top:0;
+}
+
+.noticia-conteudo p{
+    color:#ddd;
+    line-height:1.6;
+}
+
+.noticia-data{
+    color:#999;
+    font-size:14px;
+    margin-top:15px;
+}
+
+.estado{
+    text-align:center;
+    color:#ccc;
+    padding:30px;
+}
+</style>
+</head>
+
+<body>
+
+<header class="topo">
+<div class="barra">
+
+<a href="index.html" class="marca-site">
+<strong>TRAPPERS VIBES</strong>
+<span>EVENTOS SOLUTION</span>
+</a>
+
+<nav>
+<a href="index.html">Início</a>
+<a href="artistas.html">Artistas</a>
+<a href="eventos.html">Eventos</a>
+<a href="noticias.html" class="ativo">Notícias</a>
+<a href="servicos.html">Serviços</a>
+<a href="consultar.html" class="botao-consultar">🔎 Consultar Serviço</a>
+<a href="contacto.html">Contacto</a>
+</nav>
+
+<a href="admin-login.html" class="botao-adm">⚙️ ADM</a>
+
+</div>
+</header>
+
+<main class="noticias-container">
+
+<h1 class="noticias-titulo">📰 Notícias</h1>
+
+<p class="noticias-subtitulo">
+Fique por dentro das novidades, artistas, eventos e acontecimentos da TRAPPERS VIBES.
+</p>
+
+<div id="estado" class="estado">A carregar notícias...</div>
+
+<div id="noticias" class="noticias-grid"></div>
+
+</main>
+
+<footer>
+<p>© 2026 TRAPPERS VIBES EVENTOS SOLUTION 🌍💎</p>
+</footer>
+
+<script>
+const API="https://trappers-vibes-api.onrender.com";
+
+async function carregarNoticias(){
+
+    const estado=document.getElementById("estado");
+    const container=document.getElementById("noticias");
+
+    try{
+
+        const resposta=await fetch(API+"/noticias");
+
+        if(!resposta.ok){
+            throw new Error("Erro na API");
+        }
+
+        const noticias=await resposta.json();
+
+        if(!noticias.length){
+            estado.textContent="Ainda não existem notícias publicadas.";
+            return;
+        }
+
+        estado.style.display="none";
+
+        container.innerHTML=noticias.slice().reverse().map(n=>`
+
+            <article class="noticia-card">
+
+                ${n.imagem ? `
+                <img src="${esc(n.imagem)}" alt="${esc(n.titulo)}">
+                ` : ""}
+
+                <div class="noticia-conteudo">
+
+                    <h2>${esc(n.titulo)}</h2>
+
+                    <p>${esc(n.descricao)}</p>
+
+                    <div class="noticia-data">
+                        📅 ${formatarData(n.data)}
+                    </div>
+
+                </div>
+
+            </article>
+
+        `).join("");
+
+    }catch(erro){
+
+        estado.textContent="Não foi possível carregar as notícias.";
+        console.error(erro);
+
+    }
+}
+
+function formatarData(data){
+
+    if(!data) return "";
+
+    const d=new Date(data);
+
+    if(isNaN(d.getTime())) return data;
+
+    return d.toLocaleDateString("pt-PT",{
+        day:"2-digit",
+        month:"2-digit",
+        year:"numeric"
+    });
+}
+
+function esc(valor){
+
+    return String(valor ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+carregarNoticias();
+</script>
+
+</body>
+</html>
