@@ -433,3 +433,29 @@ footer p {
     }
 }
 EOF
+
+
+/* BOTÃO ÁREA ADMINISTRATIVA */
+.botao-adm {
+    margin-left: 15px;
+    padding: 9px 14px;
+    border: 1px solid #d4af37;
+    border-radius: 8px;
+    color: #d4af37;
+    text-decoration: none;
+    font-weight: bold;
+    white-space: nowrap;
+    transition: 0.3s;
+}
+
+.botao-adm:hover {
+    background: #d4af37;
+    color: #000;
+}
+
+@media (max-width: 768px) {
+    .botao-adm {
+        display: inline-block;
+        margin: 10px 0 0;
+    }
+}
