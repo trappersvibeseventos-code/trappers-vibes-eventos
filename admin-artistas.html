@@ -172,7 +172,12 @@ label{font-weight:bold}
 
 <script>
 
-const API="http://127.0.0.1:3001";
+const API="https://trappers-vibes-api.onrender.com";
+const ADMIN_PASSWORD=sessionStorage.getItem("trappersAdminPassword");
+
+if(!ADMIN_PASSWORD){
+    window.location.href="admin-login.html";
+}
 
 const form=document.getElementById("artistaForm");
 const lista=document.getElementById("lista");
@@ -204,7 +209,10 @@ form.addEventListener("submit",async function(e){
                 API+"/artistas/"+encodeURIComponent(idEditando),
                 {
                     method:"PUT",
-                    headers:{"Content-Type":"application/json"},
+                    headers:{
+                        "Content-Type":"application/json",
+                        "Authorization":"Bearer "+ADMIN_PASSWORD
+                    },
                     body:JSON.stringify(artista)
                 }
             );
@@ -215,7 +223,10 @@ form.addEventListener("submit",async function(e){
                 API+"/artistas",
                 {
                     method:"POST",
-                    headers:{"Content-Type":"application/json"},
+                    headers:{
+                        "Content-Type":"application/json",
+                        "Authorization":"Bearer "+ADMIN_PASSWORD
+                    },
                     body:JSON.stringify(artista)
                 }
             );
@@ -354,7 +365,12 @@ async function apagarArtista(id){
 
         const resposta=await fetch(
             API+"/artistas/"+encodeURIComponent(id),
-            {method:"DELETE"}
+            {
+                method:"DELETE",
+                headers:{
+                    "Authorization":"Bearer "+ADMIN_PASSWORD
+                }
+            }
         );
 
         const dados=await resposta.json();
