@@ -188,7 +188,7 @@ k<!DOCTYPE html>
 <script>
 async function carregarArtistasDaAPI() {
     try {
-        const resposta = await fetch("http://127.0.0.1:3001/artistas");
+        const resposta = await fetch("https://trappers-vibes-api.onrender.com/artistas");
         const dados = await resposta.json();
         const artistas = dados.artistas || [];
 
