@@ -64,7 +64,30 @@ function lerDados() {
   }
 }
 
+function criarBackup() {
+  const backupDir = path.join(__dirname, "data", "backups");
+
+  if (!fs.existsSync(backupDir)) {
+    fs.mkdirSync(backupDir, { recursive: true });
+  }
+
+  if (fs.existsSync(DATA_FILE)) {
+    const agora = new Date();
+    const nome = "trabalhos-" +
+      agora.getFullYear() +
+      String(agora.getMonth() + 1).padStart(2, "0") +
+      String(agora.getDate()).padStart(2, "0") + "-" +
+      String(agora.getHours()).padStart(2, "0") +
+      String(agora.getMinutes()).padStart(2, "0") +
+      String(agora.getSeconds()).padStart(2, "0") +
+      ".json";
+
+    fs.copyFileSync(DATA_FILE, path.join(backupDir, nome));
+  }
+}
+
 function guardarDados(dados) {
+  criarBackup();
   fs.writeFileSync(DATA_FILE, JSON.stringify(dados, null, 2));
 }
 
