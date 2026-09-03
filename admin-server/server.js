@@ -12,6 +12,20 @@ const DATA_FILE = path.join(__dirname, "data", "trabalhos.json");
 
 app.use(cors());
 app.use(express.json());
+app.use((req, res, next) => {
+  const publicPaths = req.method === "GET" || req.path === "/admin/login" || req.path === "/";
+  if (publicPaths) return next();
+
+  const auth = req.headers.authorization || "";
+  const expected = process.env.ADMIN_PASSWORD || "";
+
+  if (!auth.startsWith("Bearer ") || auth.slice(7) !== expected) {
+    return res.status(401).json({ sucesso: false, mensagem: "Não autorizado." });
+  }
+
+  next();
+});
+
 app.use(express.static("/data/data/com.termux/files/home/trappers-vibes"));
 
 app.post("/admin/login", (req, res) => {
