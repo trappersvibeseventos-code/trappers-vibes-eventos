@@ -214,7 +214,7 @@ label{font-weight:bold}
 
 <script>
 
-const API = "http://127.0.0.1:3001";
+const API = "https://trappers-vibes-api.onrender.com";
 
 const form = document.getElementById("trabalhoForm");
 const message = document.getElementById("message");
@@ -247,7 +247,7 @@ form.addEventListener("submit", async function(e){
 
             resposta = await fetch(API + "/trabalhos/" + encodeURIComponent(codigoEditando),{
                 method:"PUT",
-                headers:{"Content-Type":"application/json"},
+                headers:{"Content-Type":"application/json","Authorization":"Bearer "+sessionStorage.getItem("trappersAdminPassword")},
                 body:JSON.stringify(trabalho)
             });
 
@@ -255,7 +255,7 @@ form.addEventListener("submit", async function(e){
 
             resposta = await fetch(API + "/trabalhos",{
                 method:"POST",
-                headers:{"Content-Type":"application/json"},
+                headers:{"Content-Type":"application/json","Authorization":"Bearer "+sessionStorage.getItem("trappersAdminPassword")},
                 body:JSON.stringify(trabalho)
             });
 
@@ -424,7 +424,7 @@ async function apagarTrabalho(codigo){
 
         const resposta=await fetch(
             API + "/trabalhos/" + encodeURIComponent(codigo),
-            {method:"DELETE"}
+            {method:"DELETE",headers:{"Authorization":"Bearer "+sessionStorage.getItem("trappersAdminPassword")}}
         );
 
         const dados=await resposta.json();
