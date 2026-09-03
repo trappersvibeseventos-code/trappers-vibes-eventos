@@ -7,6 +7,7 @@ require("dotenv").config();
 
 const app = express();
 require("./noticias-routes")(app);
+require("./eventos-routes")(app);
 const PORT = process.env.PORT || 3001;
 
 const DATA_FILE = path.join(__dirname, "data", "trabalhos.json");
