@@ -116,7 +116,7 @@ async function abrirArquivo(tipo, filename) {
 
     try {
         const resposta = await fetch(
-            "http://127.0.0.1:3001/distribuicao/admin/arquivo/" +
+            "https://trappers-vibes-api.onrender.com/distribuicao/admin/arquivo/" +
             encodeURIComponent(tipo) + "/" +
             encodeURIComponent(filename),
             {
