@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TRAPPERS VIBES DISTRIBUTION</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #080808;
+      color: white;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 25px 20px;
+      text-align: center;
+      border-bottom: 1px solid #222;
+    }
+
+    header h1 {
+      font-size: 27px;
+    }
+
+    header span {
+      color: #d4af37;
+    }
+
+    .container {
+      width: 92%;
+      max-width: 850px;
+      margin: 30px auto;
+    }
+
+    .box {
+      background: #111;
+      border: 1px solid #292929;
+      border-radius: 15px;
+      padding: 25px;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 7px;
+      color: #ccc;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 14px;
+      border-radius: 8px;
+      border: 1px solid #333;
+      background: #080808;
+      color: white;
+      outline: none;
+    }
+
+    .planos {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .plano {
+      border: 1px solid #333;
+      border-radius: 10px;
+      padding: 18px;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .plano:hover {
+      border-color: #d4af37;
+    }
+
+    .plano input {
+      width: auto;
+      margin-right: 8px;
+    }
+
+    .preco {
+      color: #d4af37;
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 8px;
+    }
+
+    button {
+      width: 100%;
+      padding: 16px;
+      margin-top: 20px;
+      border: none;
+      border-radius: 9px;
+      background: #d4af37;
+      color: #000;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: .9;
+    }
+
+    .pagamento {
+      display: none;
+    }
+
+    .metodo {
+      background: #080808;
+      border: 1px solid #333;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 10px 0;
+    }
+
+    .metodo strong {
+      color: #d4af37;
+    }
+
+    #resultado {
+      display: none;
+      text-align: center;
+    }
+
+    #codigo {
+      color: #d4af37;
+      font-size: 28px;
+      font-weight: bold;
+      margin: 20px 0;
+    }
+
+    .aviso {
+      color: #aaa;
+      font-size: 14px;
+      line-height: 1.5;
+      margin-top: 12px;
+    }
+
+    @media(max-width: 650px) {
+      .planos {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>TRAPPERS VIBES <span>DISTRIBUTION</span></h1>
+  <p>Lance a sua música para o mundo.</p>
+</header>
+
+<div class="container">
+
+  <div class="box" id="formularioBox">
+
+    <h2>🎵 Novo lançamento</h2>
+
+    <label>Nome do artista</label>
+    <input id="artista" type="text" placeholder="Ex.: Whatson Jocker">
+
+    <label>Nome da música</label>
+    <input id="musica" type="text" placeholder="Título da música">
+
+    <label>Gênero musical</label>
+    <select id="genero">
+      <option value="">Selecionar</option>
+      <option>Trap</option>
+      <option>Rap</option>
+      <option>Hip-Hop</option>
+      <option>Afrobeats</option>
+      <option>R&B</option>
+      <option>Drill</option>
+      <option>Outro</option>
+    </select>
+
+    <label>Data de lançamento</label>
+    <input id="dataLancamento" type="date">
+
+    <label>Arquivo da música</label>
+    <input id="audio" type="file" accept="audio/*">
+
+    <label>Capa do lançamento</label>
+    <input id="capa" type="file" accept="image/*">
+
+    <h2 style="margin-top:30px;">💎 Escolha o plano</h2>
+
+    <div class="planos">
+
+      <label class="plano">
+        <input type="radio" name="plano" value="basico" data-preco="5000">
+        <strong>Básico</strong>
+        <div class="preco">5.000 Kz</div>
+        <p class="aviso">Distribuição para plataformas digitais.</p>
+      </label>
+
+      <label class="plano">
+        <input type="radio" name="plano" value="profissional" data-preco="10000">
+        <strong>Profissional</strong>
+        <div class="preco">10.000 Kz</div>
+        <p class="aviso">Distribuição + otimização + suporte.</p>
+      </label>
+
+      <label class="plano">
+        <input type="radio" name="plano" value="premium" data-preco="15000">
+        <strong>Premium</strong>
+        <div class="preco">15.000 Kz</div>
+        <p class="aviso">Distribuição + suporte prioritário + promoção.</p>
+      </label>
+
+    </div>
+
+    <button onclick="continuar()">Continuar para pagamento</button>
+
+  </div>
+
+
+  <div class="box pagamento" id="pagamentoBox">
+
+    <h2>💳 Pagamento</h2>
+
+    <p>Plano selecionado: <strong id="planoSelecionado"></strong></p>
+    <p style="margin-top:8px;">Valor: <strong id="valorSelecionado"></strong></p>
+
+    <div class="metodo">
+      🏦 <strong>IBAN</strong><br>
+      <span id="iban"></span>
+    </div>
+
+    <div class="metodo">
+      🏦 <strong>Número de conta</strong><br>
+      <span id="conta"></span>
+    </div>
+
+    <div class="metodo">
+      💳 <strong>Multicaixa Express</strong><br>
+      <span id="express"></span>
+    </div>
+
+    <div class="metodo">
+      📱 <strong>Unitel Money</strong><br>
+      <span id="money"></span>
+    </div>
+
+    <label>Comprovativo de pagamento</label>
+    <input id="comprovativo" type="file" accept="image/*,.pdf">
+
+    <p class="aviso">
+      Depois de efetuar o pagamento, envie o comprovativo.
+      O pedido ficará aguardando confirmação da TRAPPERS VIBES.
+    </p>
+
+    <button onclick="enviarPedido()">Enviar lançamento</button>
+
+  </div>
+
+
+  <div class="box" id="resultado">
+
+    <h2>✅ Pedido enviado!</h2>
+
+    <p>O teu pedido foi recebido.</p>
+
+    <div id="codigo"></div>
+
+    <p>Guarda este código para consultar o estado do lançamento.</p>
+
+    <p class="aviso">
+      Estado atual: <strong>Aguardando confirmação do pagamento</strong>
+    </p>
+
+  </div>
+
+</div>
+
+
+<script>
+
+let pagamento = {};
+
+async function continuar() {
+
+  const artista = document.getElementById("artista").value.trim();
+  const musica = document.getElementById("musica").value.trim();
+  const genero = document.getElementById("genero").value;
+  const data = document.getElementById("dataLancamento").value;
+  const audio = document.getElementById("audio").files[0];
+  const capa = document.getElementById("capa").files[0];
+
+  const plano = document.querySelector('input[name="plano"]:checked');
+
+  if (!artista || !musica || !genero || !data || !audio || !capa || !plano) {
+    alert("Preencha todos os campos e escolha um plano.");
+    return;
+  }
+
+  pagamento = {
+    artista,
+    musica,
+    genero,
+    data,
+    audio,
+    capa,
+    plano: plano.value,
+    preco: plano.dataset.preco
+  };
+
+  try {
+
+    const resposta = await fetch("http://127.0.0.1:3001/distribuicao/pagamento");
+
+    const dados = await resposta.json();
+
+    document.getElementById("iban").textContent = dados.pagamentos.iban;
+    document.getElementById("conta").textContent = dados.pagamentos.conta;
+    document.getElementById("express").textContent = dados.pagamentos.express;
+    document.getElementById("money").textContent = dados.pagamentos.unitelMoney;
+
+    document.getElementById("planoSelecionado").textContent = pagamento.plano;
+    document.getElementById("valorSelecionado").textContent =
+      Number(pagamento.preco).toLocaleString("pt-AO") + " Kz";
+
+    document.getElementById("formularioBox").style.display = "none";
+    document.getElementById("pagamentoBox").style.display = "block";
+
+  } catch (erro) {
+    alert("Não foi possível carregar os métodos de pagamento.");
+  }
+}
+
+
+async function enviarPedido() {
+
+  const comprovativo =
+    document.getElementById("comprovativo").files[0];
+
+  if (!comprovativo) {
+    alert("Envie o comprovativo de pagamento.");
+    return;
+  }
+
+  const dados = new FormData();
+
+  dados.append("artista", pagamento.artista);
+  dados.append("musica", pagamento.musica);
+  dados.append("genero", pagamento.genero);
+  dados.append("dataLancamento", pagamento.data);
+  dados.append("plano", pagamento.plano);
+  dados.append("preco", pagamento.preco);
+
+  dados.append("audio", pagamento.audio);
+  dados.append("capa", pagamento.capa);
+  dados.append("comprovativo", comprovativo);
+
+  try {
+
+    const resposta = await fetch("http://127.0.0.1:3001/distribuicao/pedidos", {
+      method: "POST",
+      body: dados
+    });
+
+    const resultado = await resposta.json();
+
+    if (!resposta.ok) {
+      alert(resultado.mensagem || "Erro ao enviar pedido.");
+      return;
+    }
+
+    document.getElementById("pagamentoBox").style.display = "none";
+    document.getElementById("resultado").style.display = "block";
+
+    document.getElementById("codigo").textContent =
+      resultado.pedido.codigo;
+
+  } catch (erro) {
+    alert("Erro de conexão com o servidor.");
+  }
+
+}
+
+</script>
+
+</body>
+</html>
