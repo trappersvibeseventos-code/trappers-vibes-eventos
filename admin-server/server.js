@@ -6,14 +6,15 @@ const crypto = require("crypto");
 require("dotenv").config();
 
 const app = express();
-require("./noticias-routes")(app);
-require("./eventos-routes")(app);
 const PORT = process.env.PORT || 3001;
 
 const DATA_FILE = path.join(__dirname, "data", "trabalhos.json");
 
 app.use(cors());
 app.use(express.json());
+require("./noticias-routes")(app);
+require("./eventos-routes")(app);
+require("./distribuicao-routes")(app);
 app.use((req, res, next) => {
   const publicPaths = req.method === "GET" || req.path === "/admin/login" || req.path === "/";
   if (publicPaths) return next();
