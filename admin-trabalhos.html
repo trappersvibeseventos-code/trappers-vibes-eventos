@@ -276,14 +276,14 @@ form.addEventListener("submit", async function(e){
 
         }else{
 
-            message.textContent="❌ "+(dados.erro || "Não foi possível guardar.");
+            message.textContent="❌ "+(dados.erro || dados.mensagem || "Não foi possível guardar.");
 
         }
 
     }catch(erro){
 
         message.style.display="block";
-        message.textContent="❌ Servidor administrativo indisponível.";
+        message.textContent="❌ Erro: "+(erro.message || erro);
 
     }
 
