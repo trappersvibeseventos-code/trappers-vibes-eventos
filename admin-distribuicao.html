@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distribuição | Painel Admin</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <div class="container">
+        <nav>
+            <a href="admin.html">← Painel</a>
+            <a href="index.html">Início</a>
+        </nav>
+    </div>
+</header>
+
+<main class="admin-page">
+
+    <section class="admin-header">
+        <h1>🎵 TRAPPERS VIBES DISTRIBUTION</h1>
+        <p>Gestão de projetos e pagamentos dos artistas.</p>
+    </section>
+
+    <section id="listaPedidos">
+        <p>⏳ A carregar pedidos...</p>
+    </section>
+
+</main>
+
+<script>
+async function carregarPedidos() {
+    const lista = document.getElementById("listaPedidos");
+
+    try {
+        const resposta = await fetch("http://127.0.0.1:3001/distribuicao/pedidos");
+
+        if (!resposta.ok) {
+            throw new Error("Não foi possível carregar os pedidos.");
+        }
+
+        const dados = await resposta.json();
+
+        if (!dados.pedidos || dados.pedidos.length === 0) {
+            lista.innerHTML = `
+                <div class="admin-card">
+                    <h2>📭 Nenhum pedido</h2>
+                    <p>Ainda não existem pedidos de distribuição.</p>
+                </div>
+            `;
+            return;
+        }
+
+        lista.innerHTML = dados.pedidos.map(pedido => `
+            <div class="admin-card" style="margin-bottom:20px;">
+                <h2>🎵 ${pedido.musica || "Sem título"}</h2>
+                <p><strong>Artista:</strong> ${pedido.artista || "-"}</p>
+                <p><strong>Código:</strong> ${pedido.codigo || "-"}</p>
+                <p><strong>Plano:</strong> ${pedido.plano || "-"}</p>
+                <p><strong>Valor:</strong> ${pedido.valor || 0} Kz</p>
+                <p><strong>Estado:</strong> ${pedido.estado || "-"}</p>
+
+                <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;">
+
+                    ${pedido.audio ? `
+                    <button
+                        class="admin-btn"
+                        onclick="abrirArquivo('audio', '${pedido.audio}')">
+                        🎧 Ouvir música
+                    </button>
+                    ` : ""}
+
+                    ${pedido.capa ? `
+                    <button
+                        class="admin-btn"
+                        onclick="abrirArquivo('capa', '${pedido.capa}')">
+                        🖼️ Ver capa
+                    </button>
+                    ` : ""}
+
+                    ${pedido.comprovativo ? `
+                    <button
+                        class="admin-btn"
+                        onclick="abrirArquivo('comprovativo', '${pedido.comprovativo}')">
+                        🧾 Ver comprovativo
+                    </button>
+                    ` : ""}
+
+                </div>
+            </div>
+        `).join("");
+
+    } catch (erro) {
+        console.error(erro);
+
+        lista.innerHTML = `
+            <div class="admin-card">
+                <h2>❌ Erro</h2>
+                <p>Não foi possível carregar os pedidos.</p>
+            </div>
+        `;
+    }
+}
+
+async function abrirArquivo(tipo, filename) {
+    const senha = sessionStorage.getItem("trappersAdminPassword");
+
+    if (!senha) {
+        alert("Sessão ADM não encontrada. Faça login novamente.");
+        window.location.href = "admin-login.html";
+        return;
+    }
+
+    try {
+        const resposta = await fetch(
+            "http://127.0.0.1:3001/distribuicao/admin/arquivo/" +
+            encodeURIComponent(tipo) + "/" +
+            encodeURIComponent(filename),
+            {
+                headers: {
+                    "Authorization": "Bearer " + senha
+                }
+            }
+        );
+
+        if (!resposta.ok) {
+            throw new Error("Não foi possível abrir o arquivo.");
+        }
+
+        const blob = await resposta.blob();
+        const url = URL.createObjectURL(blob);
+
+        window.open(url, "_blank");
+
+    } catch (erro) {
+        console.error(erro);
+        alert("Não foi possível abrir o arquivo.");
+    }
+}
+
+
+carregarPedidos();
+</script>
+
+</body>
+</html>
