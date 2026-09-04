@@ -241,6 +241,13 @@ form.addEventListener("submit", async function(e){
 
     try{
 
+        const senhaAdmin = sessionStorage.getItem("trappersAdminPassword");
+        if (!senhaAdmin) {
+            message.style.display="block";
+            message.textContent="❌ Diagnóstico: senha administrativa NÃO encontrada nesta sessão.";
+            return;
+        }
+
         let resposta;
 
         if(codigoEditando){
