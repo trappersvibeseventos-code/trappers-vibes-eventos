@@ -196,11 +196,11 @@ async function carregarArtistasDaAPI() {
         if (secoes.length < 2) return;
 
         const principais = artistas.filter(a =>
-            ["Cleuvio Trapstar", "Snoow"].includes(a.nome)
+            ["Cleuvio Trapstar", "Snoow", "Vedson Waves"].includes(a.nome)
         );
 
         const restantes = artistas.filter(a =>
-            !["Cleuvio Trapstar", "Snoow"].includes(a.nome)
+            !["Cleuvio Trapstar", "Snoow", "Vedson Waves"].includes(a.nome)
         );
 
         function criarCard(artista, icone) {

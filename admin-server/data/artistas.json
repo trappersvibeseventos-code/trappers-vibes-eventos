@@ -1,9 +1,27 @@
 {
   "artistas": [
     {
-      "id": "1788383160218",
-      "nome": "Dalton",
-      "descricao": "Artista, estilo urbano, trap",
+      "id": "1",
+      "nome": "Cleuvio Trapstar",
+      "descricao": "Artista principal da TRAPPERS VIBES EVENTOS SOLUTION.",
+      "imagem": "",
+      "instagram": "",
+      "youtube": "",
+      "spotify": ""
+    },
+    {
+      "id": "2",
+      "nome": "Snoow",
+      "descricao": "Artista principal da TRAPPERS VIBES EVENTOS SOLUTION.",
+      "imagem": "",
+      "instagram": "",
+      "youtube": "",
+      "spotify": ""
+    },
+    {
+      "id": "3",
+      "nome": "Vedson Waves",
+      "descricao": "Artista principal da TRAPPERS VIBES EVENTOS SOLUTION.",
       "imagem": "",
       "instagram": "",
       "youtube": "",
